@@ -1,6 +1,6 @@
 "use client";
 
-import { setTracking } from "@/app/actions/setTracking";
+import { setTracking } from "@/app/(app)/actions/setTracking";
 import { UrlLog } from "@/lib/type";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";

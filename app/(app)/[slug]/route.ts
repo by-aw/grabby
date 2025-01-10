@@ -1,4 +1,4 @@
-import { getUrlLog, updateUrlLog } from "@/app/actions/getLink";
+import { getUrlLog, updateUrlLog } from "@/app/(app)/actions/getLink";
 import { UrlLog } from "@/lib/type";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";

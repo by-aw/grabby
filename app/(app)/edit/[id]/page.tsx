@@ -1,4 +1,4 @@
-import { getUrlLogByEditUrl } from "@/app/actions/getLink";
+import { getUrlLogByEditUrl } from "@/app/(app)/actions/getLink";
 import GrabbyLogo from "@/app/assets/logo/grabby.svg";
 import AnalyticsDialog from "@/components/dialog/AnalyticsDialog";
 import CustomUrlDialog from "@/components/dialog/CustomUrlDialog";

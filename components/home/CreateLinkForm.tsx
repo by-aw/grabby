@@ -1,6 +1,6 @@
 "use client";
 
-import createLink from "@/app/actions/createLinkAction";
+import createLink from "@/app/(app)/actions/createLinkAction";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,

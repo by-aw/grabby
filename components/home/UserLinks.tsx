@@ -1,6 +1,6 @@
 "use client";
 
-import { getLinks } from "@/app/actions/getLinks";
+import { getUserLinks } from "@/app/(app)/actions/getLinks";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { UrlLog } from "@/lib/type";
 import { MousePointer } from "lucide-react";
@@ -30,21 +30,19 @@ export default function UserLinks() {
       const shouldShowLoading = Object.keys(links).length === 0;
       setIsRefreshing(shouldShowLoading);
 
-      const dbLinks = await getLinks(savedLinks);
+      const dbLinks = await getUserLinks(savedLinks);
 
-      if (dbLinks) {
-        // Update cache
-        Object.entries(dbLinks).forEach(([key, value]) => {
-          linkCache[key] = value;
-        });
+      // Update cache
+      Object.entries(dbLinks).forEach(([key, value]) => {
+        linkCache[key] = value;
+      });
 
-        setLinks(dbLinks);
+      setLinks(dbLinks);
 
-        // Filter out non-existent links
-        const validLinks = savedLinks.filter((shortUrl) => dbLinks[shortUrl]);
-        if (validLinks.length !== savedLinks.length) {
-          setSavedLinks(validLinks);
-        }
+      // Filter out non-existent links
+      const validLinks = savedLinks.filter((shortUrl) => dbLinks[shortUrl]);
+      if (validLinks.length !== savedLinks.length) {
+        setSavedLinks(validLinks);
       }
 
       setIsRefreshing(false);
