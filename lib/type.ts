@@ -4,10 +4,10 @@ export type UrlLog = {
   longUrl: string;
   visits: number;
   visitors: {
-    ip: string | undefined;
-    agent: string | undefined;
-    country_name: string | undefined;
-    isp: string | undefined;
+    ip: string | null;
+    agent: string | null;
+    country_name: string | null;
+    isp: string | null;
     timestamp: string;
   }[];
 };

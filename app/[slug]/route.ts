@@ -1,5 +1,5 @@
+import { getUrlLog, updateUrlLog } from "@/app/actions/getLink";
 import { UrlLog } from "@/lib/type";
-import { Redis } from "@upstash/redis";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { env } from "process";
@@ -14,10 +14,6 @@ export async function GET(
   const headersList = headers();
   const ipAddress = headersList.get("x-forwarded-for") || "unknown";
   const userAgent = headersList.get("user-agent");
-  const referer = headersList.get("referer") || "";
-
-  // Don't track visits from the edit page
-  const isFromEditPage = referer.includes("/edit/");
 
   // Validate slug format
   if (!/^[a-zA-Z0-9_-]{8}$/.test(slug)) {
@@ -28,9 +24,7 @@ export async function GET(
     );
   }
 
-  const redis = Redis.fromEnv();
-  const urlLog = await redis.get<UrlLog>(slug);
-
+  const urlLog = await getUrlLog(slug);
   if (!urlLog) {
     return NextResponse.redirect(
       env.NODE_ENV === "development"
@@ -42,38 +36,38 @@ export async function GET(
   let isp = null;
   let country_name = null;
 
-  if (ipAddress && urlLog.track === "true" && !isFromEditPage) {
+  if (ipAddress && urlLog.track === "true") {
     try {
       const response = await fetch(
         `https://api.iplocation.net/?ip=${ipAddress}`
       );
       if (response.ok) {
         const data = await response.json();
-        isp = data.isp;
-        country_name = data.country_code2;
+        isp = data.isp || null;
+        country_name = data.country_code2 || null;
       }
-    } catch (error) {}
+    } catch (error) {
+      // Silently handle API errors
+    }
   }
 
-  if (urlLog.track === "true" && !isFromEditPage) {
-    await redis.set(
-      slug,
-      JSON.stringify(<UrlLog>{
-        ...urlLog,
-        track: "true",
-        visits: urlLog.visits + 1,
-        visitors: [
-          ...urlLog.visitors,
-          {
-            ip: ipAddress,
-            agent: userAgent,
-            timestamp: Date.now().toString(),
-            isp: isp,
-            country_name: country_name,
-          },
-        ],
-      })
-    );
+  if (urlLog.track === "true") {
+    const updatedLog: UrlLog = {
+      ...urlLog,
+      visits: urlLog.visits + 1,
+      visitors: [
+        ...urlLog.visitors,
+        {
+          ip: ipAddress,
+          agent: userAgent,
+          timestamp: Date.now().toString(),
+          isp,
+          country_name,
+        },
+      ],
+    };
+
+    await updateUrlLog(slug, updatedLog);
   }
 
   return NextResponse.redirect(urlLog.longUrl, { status: 302 });

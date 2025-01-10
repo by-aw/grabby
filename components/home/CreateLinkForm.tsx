@@ -37,7 +37,7 @@ function PasteButton({
           type="button"
           onClick={handlePaste}
           className={cn(
-            "rounded-full w-12 h-12 hover:bg-foreground/10",
+            "rounded-full min-w-12 min-h-12 hover:bg-foreground/10",
             className
           )}
         >
@@ -58,7 +58,7 @@ function ShortenButton({ className }: { className?: string }) {
         <Button
           size="icon"
           type="submit"
-          className={cn("rounded-full w-12 h-12", className)}
+          className={cn("rounded-full min-w-12 min-h-12", className)}
         >
           <ScissorsIcon className="w-6 h-6" />
         </Button>
@@ -90,19 +90,21 @@ export default function CreateLinkForm() {
       return;
     }
 
-    const { success, message, shortUrl, editUrl } = await createLink(formData);
-    if (shortUrl && editUrl) {
-      setSavedLinks([...savedLinks, shortUrl]);
-      router.push(`/edit/${editUrl}`);
-    } else {
+    const result = await createLink(formData);
+
+    if (!result.success) {
       setIsError(true);
       setTimeout(() => setIsError(false), 500);
       toast({
         title: "Error creating short link",
-        description: message,
+        description: result.message,
         variant: "destructive",
       });
+      return;
     }
+
+    setSavedLinks([...savedLinks, result.shortUrl]);
+    router.push(`/edit/${result.editUrl}`);
   };
 
   return (
@@ -121,7 +123,7 @@ export default function CreateLinkForm() {
         onChange={(e) => setLink(e.target.value)}
         placeholder="Enter your link"
         className={cn(
-          "bg-transparent text-base border-none outline-none flex-1 h-full pl-4 py-3",
+          "bg-transparent text-base border-none outline-none flex-1 min-w-0 h-full pl-4 py-3",
           isError &&
             "placeholder-[hsl(var(--destructive-foreground))] text-[hsl(var(--destructive-foreground))]"
         )}

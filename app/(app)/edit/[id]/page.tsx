@@ -1,27 +1,13 @@
+import { getUrlLogByEditUrl } from "@/app/actions/getLink";
 import GrabbyLogo from "@/app/assets/logo/grabby.svg";
 import AnalyticsDialog from "@/components/dialog/AnalyticsDialog";
 import CustomUrlDialog from "@/components/dialog/CustomUrlDialog";
 import ExportDialog from "@/components/dialog/ExportDialog";
 import BackButton from "@/components/view/BackButton";
 import LiveTrafficTable from "@/components/view/LiveTrafficTable";
-import { UrlLog } from "@/lib/type";
-import { Redis } from "@upstash/redis";
 import { Copy, MousePointer } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-async function getUrlLogByEditUrl(editUrl: string) {
-  const redis = Redis.fromEnv();
-  const keys = await redis.keys("*");
-
-  for (const key of keys) {
-    const urlLog = await redis.get<UrlLog>(key);
-    if (urlLog && urlLog.editUrl === editUrl) {
-      return { shortUrl: key, urlLog };
-    }
-  }
-  return null;
-}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const editUrl = params.id;
@@ -34,7 +20,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     notFound();
   }
 
-  const { shortUrl, urlLog } = result;
+  const { shortUrl, ...urlLog } = result;
 
   return (
     <main className="flex flex-col items-center w-full mx-auto relative h-screen p-4">
