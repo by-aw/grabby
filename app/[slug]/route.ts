@@ -2,6 +2,7 @@ import { UrlLog } from "@/lib/type";
 import { Redis } from "@upstash/redis";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { env } from "process";
 
 export const runtime = "edge";
 
@@ -16,9 +17,10 @@ export async function GET(
 
   // Validate slug format
   if (!/^[a-zA-Z0-9_-]{8}$/.test(slug)) {
-    return NextResponse.json(
-      { error: "Invalid short URL format" },
-      { status: 400 }
+    return NextResponse.redirect(
+      env.NODE_ENV === "development"
+        ? "http://localhost:3000/"
+        : "https://grabby.co/"
     );
   }
 
@@ -26,7 +28,11 @@ export async function GET(
   const urlLog = await redis.get<UrlLog>(slug);
 
   if (!urlLog) {
-    return NextResponse.json({ error: "URL not found" }, { status: 404 });
+    return NextResponse.redirect(
+      env.NODE_ENV === "development"
+        ? "http://localhost:3000/"
+        : "https://grabby.co/"
+    );
   }
 
   let isp = null;
