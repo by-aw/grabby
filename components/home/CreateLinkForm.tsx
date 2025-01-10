@@ -109,7 +109,7 @@ export default function CreateLinkForm() {
     <form
       onSubmit={handleSubmit}
       className={cn(
-        `flex items-center gap-1 justify-center bg-secondary rounded-full h-16 w-full pr-2 transition-colors overflow-hidden`,
+        `flex items-center gap-1 justify-center bg-secondary rounded-full h-16 w-full pr-2 transition-all overflow-hidden ring-0 ring-primary/50 has-[:focus-visible]:ring-2`,
         isError && "shake-animation bg-destructive"
       )}
     >
@@ -117,6 +117,7 @@ export default function CreateLinkForm() {
         name="link"
         type="text"
         value={link}
+        autoFocus
         onChange={(e) => setLink(e.target.value)}
         placeholder="Enter your link"
         className={cn(
