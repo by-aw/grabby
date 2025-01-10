@@ -14,6 +14,10 @@ export async function GET(
   const headersList = headers();
   const ipAddress = headersList.get("x-forwarded-for") || "unknown";
   const userAgent = headersList.get("user-agent");
+  const referer = headersList.get("referer") || "";
+
+  // Don't track visits from the edit page
+  const isFromEditPage = referer.includes("/edit/");
 
   // Validate slug format
   if (!/^[a-zA-Z0-9_-]{8}$/.test(slug)) {
@@ -38,7 +42,7 @@ export async function GET(
   let isp = null;
   let country_name = null;
 
-  if (ipAddress && urlLog.track === "true") {
+  if (ipAddress && urlLog.track === "true" && !isFromEditPage) {
     try {
       const response = await fetch(
         `https://api.iplocation.net/?ip=${ipAddress}`
@@ -51,7 +55,7 @@ export async function GET(
     } catch (error) {}
   }
 
-  if (urlLog.track === "true") {
+  if (urlLog.track === "true" && !isFromEditPage) {
     await redis.set(
       slug,
       JSON.stringify(<UrlLog>{
