@@ -67,6 +67,7 @@ export default function LiveTrafficTable({
           <TableRow>
             <TableHead>Time</TableHead>
             <TableHead>Address</TableHead>
+            <TableHead>Country</TableHead>
             <TableHead>Device</TableHead>
           </TableRow>
         </TableHeader>
@@ -77,6 +78,7 @@ export default function LiveTrafficTable({
                 {new Date(Number(visitor.timestamp)).toLocaleString()}
               </TableCell>
               <TableCell>{visitor.ip ?? "N/A"}</TableCell>
+              <TableCell>{visitor.country_name ?? "N/A"}</TableCell>
               <TableCell>
                 {getOSFromUserAgent(visitor.agent) ?? "N/A"}
               </TableCell>
