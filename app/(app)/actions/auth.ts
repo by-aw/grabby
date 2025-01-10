@@ -6,7 +6,7 @@ import { createServerSupabase } from "@/lib/supabase/serverClient";
 export async function signIn(email: string, redirectPath: string) {
   // Clean the email first
   const cleanEmail = email.toLowerCase().trim();
-
+  console.log("cleanEmail", cleanEmail);
   // Check if email is allowed
   if (!isEmailAllowed(cleanEmail)) {
     return {

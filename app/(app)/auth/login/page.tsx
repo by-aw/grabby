@@ -24,11 +24,9 @@ export default async function LoginPage({
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4">
+    <main className="flex flex-col items-center justify-center w-full max-w-md min-h-screen p-4">
       <h1 className="text-2xl font-bold mb-8">Login</h1>
-      <div className="w-full max-w-md">
-        <SigninForm signIn={handleLogin} />
-      </div>
+      <SigninForm signIn={handleLogin} />
     </main>
   );
 }

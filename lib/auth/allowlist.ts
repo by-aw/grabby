@@ -1,17 +1,15 @@
-// List of allowed email addresses or domains
-const ALLOWED_EMAILS = new Set([
-  // Add specific email addresses
-  "aw@byaw.xyz",
-  // Add more emails as needed
-]);
+"use server";
 
-const ALLOWED_DOMAINS = new Set([
-  // Add allowed domains (without @)
-  "grabby.co",
-  // Add more domains as needed
-]);
+// List of allowed email addresses or domains from environment variables
+const ALLOWED_EMAILS = new Set(
+  process.env.ALLOWED_EMAILS?.split(",").map((email) => email.trim()) ?? []
+);
 
-export function isEmailAllowed(email: string): boolean {
+const ALLOWED_DOMAINS = new Set(
+  process.env.ALLOWED_DOMAINS?.split(",").map((domain) => domain.trim()) ?? []
+);
+
+export async function isEmailAllowed(email: string): Promise<boolean> {
   if (!email) return false;
 
   const cleanEmail = email.toLowerCase().trim();

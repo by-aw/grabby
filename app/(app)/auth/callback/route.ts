@@ -1,3 +1,5 @@
+"use server";
+
 import { isEmailAllowed } from "@/lib/auth/allowlist";
 import { createServerSupabase } from "@/lib/supabase/serverClient";
 import { cookies } from "next/headers";
