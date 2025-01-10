@@ -1,8 +1,10 @@
+"use client";
+
 import Chip from "./Chip";
 
 export default function Features() {
   return (
-    <footer className="flex flex-wrap justify-center gap-2 mt-auto pb-4 w-full text-muted-foreground">
+    <footer className="flex flex-wrap justify-center gap-2 mt-auto py-4 w-full text-muted-foreground overflow-hidden">
       <Chip text="Grab IP's" />
       <Chip text="See device info" />
       <Chip text="Live traffic" />
