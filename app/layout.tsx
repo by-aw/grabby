@@ -1,14 +1,21 @@
-import type { Metadata } from "next";
-import "./globals.css";
-
+import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
 import { env } from "process";
+import "./globals.css";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#1f1f1f" },
+  ],
+  colorScheme: "light dark",
+};
+
 export const metadata: Metadata = {
   title: "Easily create smart links | Grabby",
-  description: "Quickly shorten your URLs and track analytics.",
+  description: "Easily create smart short links with Grabby.",
   metadataBase: env.NEXT_PUBLIC_URL
     ? new URL(env.NEXT_PUBLIC_URL)
     : new URL("https://grabby.co"),
@@ -40,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={outfit.className}>{children}</body>
     </html>
   );
