@@ -2,14 +2,21 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { Outfit } from "next/font/google";
+import { env } from "process";
 
 const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Easily create smart links | Grabby",
   description: "Quickly shorten your URLs and track analytics.",
-  metadataBase: new URL("https://grabby.co"),
+  metadataBase: env.NEXT_PUBLIC_URL
+    ? new URL(env.NEXT_PUBLIC_URL)
+    : new URL("https://grabby.co"),
   openGraph: {
+    siteName: "Grabby",
+    url: env.NEXT_PUBLIC_URL
+      ? new URL(env.NEXT_PUBLIC_URL)
+      : new URL("https://grabby.co"),
     images: [
       {
         url: "/opengraph-image.png",
