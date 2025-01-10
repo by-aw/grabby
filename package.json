@@ -24,6 +24,7 @@
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.38.3",
     "hono": "^4.6.16",
+    "lru-cache": "^11.0.2",
     "lucide-react": "^0.469.0",
     "nanoid": "^5.0.9",
     "next": "14.2.5",
