@@ -32,13 +32,13 @@ export default async function Page({ params }: { params: { id: string } }) {
       </header>
       <section className="flex justify-between gap-4 flex-col sm:flex-row max-w-screen-md w-full">
         <div>
-          <Link
+          <a
             href={`/${shortUrl}`}
             className="flex items-center gap-2 mb-1 hover:underline group"
           >
             <h1 className="text-2xl font-bold">{shortUrl}</h1>
             <Copy className="w-4 h-4 text-muted-foreground group-hover:text-foreground" />
-          </Link>
+          </a>
           <h3 className="text-muted-foreground">{urlLog.longUrl}</h3>
         </div>
         <section className="float-right flex gap-2">
